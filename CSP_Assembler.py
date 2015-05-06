@@ -21,10 +21,3 @@
 #	dependencies and memory access stalls during execution.
 #
 #=================================================================
-
-# Universal "constants" related to the ISA and architecture
-int word_size = 32
-int addressability = 32	# MOST LIKELY WILL HAVE TO CHANGE
-int register_bits = 4
-int 
-int 
