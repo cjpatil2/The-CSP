@@ -8,7 +8,12 @@ ECE Illinois guys who stumble here: this entire project, especially the software
 To facilitate full simulation of this processor, I have written an assembler in Python that inputs a raw assembly file and converts it into CSP-specific machine code that can be read by the processor as memory values. An additional shell script helps automate this entire process. TO also ease assembly programming development, I also wrote an IDE that allows the user to simulate his/her assembly programs before the processor runs them to see if they meet his/her software specs. Finally, since I am after all a die-hard IC designer, I also have some TCL scripts to help in RTL synthesis and physical layout with Synopsys Design Vision and Cadence Encounter (tsmc03d TechLib with the VTVT-250 standard cell library).
 
 Breakdown of folders in this repo:
+
 Soft-Processor: Contains all hardware aspects of the CSP. This includes the SystemVerilog code, Quartus additional files, and ModelSim scripts.
+
 Softwares: Contains an assembler, a RAM memory loading script, and the simulation IDE
-Doc: Documentation, support of all major files, and other information.
+
+Documentation: Support of all major files, guidelines for programming, and other information.
+
 Design: Step-by-step design decisions to help others navigate through the complicated mess that is processor design.
+
