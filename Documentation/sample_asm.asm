@@ -4,7 +4,6 @@
 #	ECE 190 MP1 translated from LC3 to CSP
 # 
 
-PROGRAM sample_asm
 BEGIN 0
 
 	# Clear all basic registers
@@ -40,5 +39,5 @@ INNER:
 NUMONE .DATA 6			# Holds the data for multiplicand
 NUMTWO .DATA 4			# Holds the data for multiplier
 NUMTHREE .DATA X		# Holds the result at this address
-
+	
 END
