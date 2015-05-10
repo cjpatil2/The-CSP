@@ -57,6 +57,9 @@ for line in asm_file
 	# Decode each line
 	converted_line = decoded_line(parsed_spaces)
 
+	# Write into file
+	memory_file.write(converted_line)
+	
 
 
 def decoded_line(line_in_file):
@@ -73,7 +76,7 @@ def decoded_line(line_in_file):
 		line_in_file[0] == "LSD" or 
 		line_in_file[0] == "RSA" or
 		line_in_file[0] == "RSD"):
-		full_instruction = arithmetic_op(line_in_file)
+		full_instruction = arithmetic_operation(line_in_file)
 
 	if (line_in_file[0] == "FADD" or 
 		line_in_file[0] == "FSUB" or 
@@ -81,7 +84,7 @@ def decoded_line(line_in_file):
 		line_in_file[0] == "FDIV" or 
 		line_in_file[0] == "ITOF" or
 		line_in_file[0] == "FTOI"):
-		full_instruction = floating_op(line_in_file)
+		full_instruction = floating_operation(line_in_file)
 
 	if (line_in_file[0] == "BR" or 
 		line_in_file[0] == "BRC" or 
@@ -91,7 +94,7 @@ def decoded_line(line_in_file):
 		line_in_file[0] == "RET" or 
 		line_in_file[0] == "PCR" or
 		line_in_file[0] == "PCS"):
-		full_instruction = branch_op(line_in_file)
+		full_instruction = branch_operation(line_in_file)
 
 	if (line_in_file[0] == "LD" or 
 		line_in_file[0] == "LDR" or 
@@ -100,7 +103,7 @@ def decoded_line(line_in_file):
 		line_in_file[0] == "LSP" or
 		line_in_file[0] == "POP" or 
 		line_in_file[0] == "SDEC"):
-		full_instruction = load_op(line_in_file)
+		full_instruction = load_operation(line_in_file)
 
 	if (line_in_file[0] == "ST" or 
 		line_in_file[0] == "STR" or 
@@ -109,144 +112,96 @@ def decoded_line(line_in_file):
 		line_in_file[0] == "STP" or
 		line_in_file[0] == "PUSH" or 
 		line_in_file[0] == "SINC"):
-		full_instruction = load_op(line_in_file)
+		full_instruction = store_operation(line_in_file)
 
 	if (line_in_file[0] == "WVAL" or 
 		line_in_file[0] == "HALT" or 
 		line_in_file[0] == "NOP"):
-		full_instruction = special_op(line_in_file)
+		full_instruction = special_operation(line_in_file)
 
 	else
 		full_instruction = ""
 
 	return full_instruction
 
+# Decodes the full artihmetic instruction into a binary string
+def arithmetic_operation(line_in_file):
 
-def arithmetic_op(instruction_line):
+	opcode = arith_opcode_decode(line_in_file[0])
+	dr_set = register_convert(line_in_file[1])
+	sr1_set = register_convert(line_in_file[2])
 
+	# Depending on the last number, the instruction is I- or R-type
+	# In the case of NOT, we just ignore and set all remaining bits 0
 
-	return 
+	if line_in_file[0] == "NOT"
+		sr2_set = "00000000000000000"
 
-def floating_op(instruction_line):
+	else if line_in_file[0] == "LSD" or line_in_file[0] == "RSD"
+		sr2_set = imm_convert(line_in_file[3], '017b') + "0"
 
+	else if '$' in line_in_file[3]
+		sr2_set = register_convert(line_in_file[3]) + "00000000000000"
 
-	return 
+	else if '$' not in line_in_file[3]
+		sr2_set = imm_convert(line_in_file[3], '017b') + "1"
 
-def branch_op(instruction_line):
+	final_instruction = opcode + dr_set + sr1_set + sr2_set
+	hex_decoded_instr = hex_convert(final_instruction)
 
+	return hex_decoded_instr
 
-	return 
+# Opcode decode function for arithmetic instructions
+def arith_opcode_decode(line_in_file):
 
-def load_op(instruction_line):
+	if(line_in_file[0] == "ADD")
+		op_out = "000000"
+	else if line_in_file[0] == "SUB":
+		op_out = "000001"
+	else if line_in_file[0] == "MULT":
+		op_out = "000010"
+	else if line_in_file[0] == "DIV":
+		op_out = "000011"
 
+	else if line_in_file[0] == "AND":
+		op_out = "000100"
+	else if line_in_file[0] == "OR":
+		op_out = "000101"
+	else if line_in_file[0] == "NOT":
+		op_out = "000110"
+	else if line_in_file[0] == "XOR":
+		op_out = "000111"
 
-	return 
+	else if line_in_file[0] == "LSA":
+		op_out = "001000"
+	else if line_in_file[0] == "LSD":
+		op_out = "001000"
+	else if line_in_file[0] == "RSA":
+		op_out = "001001"
+	else if line_in_file[0] == "RSD":
+		op_out = "001001"
 
-def store_op(instruction_line):
-
-
-	return 
-
-def special_op(instruction_line):
-
-
-	return 
-
-
-
-# The largest look-up table function ever. Just assigns a boolean value for
-# every opcode in the system. Wondering if I can clean this up.
-def opcode_translate(curr_word):
-
-	if(curr_word == "NOP")
-		opcode_out = "111111"
-
-	else if(curr_word == "ADD")
-		opcode_out = "000000"
-	else if curr_word == "SUB":
-		opcode_out = "000001"
-	else if curr_word == "MULT":
-		opcode_out = "000010"
-	else if curr_word == "DIV":
-		opcode_out = "000011"
-
-	else if curr_word == "AND":
-		opcode_out = "000100"
-	else if curr_word == "OR":
-		opcode_out = "000101"
-	else if curr_word == "NOT":
-		opcode_out = "000110"
-	else if curr_word == "XOR":
-		opcode_out = "000111"
-
-	else if curr_word == "LSA":
-		opcode_out = "001000"
-	else if curr_word == "LSD":
-		opcode_out = "001000"
-	else if curr_word == "RSA":
-		opcode_out = "001001"
-	else if curr_word == "RSD":
-		opcode_out = "001001"
-
-	else if curr_word == "FADD":
-		opcode_out = "001010"
-	else if curr_word == "FSUB":
-		opcode_out = "001011"
-	else if curr_word == "FMULT":
-		opcode_out = "001100"
-	else if curr_word == "FDIV":
-		opcode_out = "001101"
-	else if curr_word == "ITOF":
-		opcode_out = "001110"
-	else if curr_word == "FTOI":
-		opcode_out = "001111"
-
-	else if curr_word == "BR":
-		opcode_out = "010000"
-	else if curr_word == "BRC":
-		opcode_out = "010001"
-	else if curr_word == "BREQ":
-		opcode_out = "010010"
-	else if curr_word == "BRNEQ":
-		opcode_out = "010011"
-
-	else if curr_word == "JMP":
-		opcode_out = "010 100"
-	else if curr_word == "RET":
-		opcode_out = "010 101"
-	else if curr_word == "PCR":
-		opcode_out = "010 110"
-	else if curr_word == "PCS":
-		opcode_out = "010 111"
-
-	else if curr_word == "LD":
-		opcode_out = "011 000"
-	else if curr_word == "LDR":
-		opcode_out = "011 001"
-	else if curr_word == "LDW":
-		opcode_out = "011 010"
-	else if curr_word == "LDB":
-		opcode_out = "011 011"
-	else if curr_word == "LSP":
-		opcode_out = "011 100"
-	else if curr_word == "POP":
-		opcode_out = "011 101"
-	else if curr_word == "SDEC":
-		opcode_out = "011 110"
+	return op_out
 
 
+# Register number to binary converter. Takes in a segment of an instruction
+# word like $0 and converts the number into a 4-digit binary value.
+def register_convert(instruction_term):
 
-	return opcode_out
+	no_dollar = instruction_term.split("$",1)[1]
+	converted_value = format(int(no_dollar), '004b')
 
+	return converted_value
 
-def calc_offset(curr_line):
+# Generalized decimal to binary converter, usually used for immediates.
+def imm_convert(instruction_term, string_formatter):
 
+	converted_value = format(int(instruction_term), string_formatter)	# '004b' example
 
-	return
+	return converted_value
 
-
-# Binary to hex converter (without the 1x in front)
-def hex-convert(bin_value):
+# Binary string to hex converter (without the 1x in front)
+def hex_convert(bin_value):
 
 	hex_value = hex(int(bin_value,2)).split('x')[1]
 

@@ -7,32 +7,32 @@
 BEGIN 0
 
 	# Clear all basic registers
-	# R1 contains the multiplier
-	# R2 contains the multiplicand
-	# R3 contains the bitmask.
-	# R4 contains the temporary multiplication result
-	# R5 contains the final multiplication answer
+	# $1 contains the multiplier
+	# $2 contains the multiplicand
+	# $3 contains the bitmask.
+	# $4 contains the temporary multiplication result
+	# $5 contains the final multiplication answer
 
-	AND $R1 $R1 0
-	AND $R2 $R2 0
-	AND $R3 $R3 0
-	AND $R4 $R4 0
-	AND $R5 $R5 0
+	AND $1 $1 0
+	AND $2 $2 0
+	AND $3 $3 0
+	AND $4 $4 0
+	AND $5 $5 0
 
-	LDI $R1 NUMTWO		# Loads value of multiplier
-	LDI $R2 NUMONE		# Loads value of multiplicand
-	ADD $R3 $R3 1		# Creates bitmask in R3 by adding 1 to empty R3.
+	LDI $1 NUMTWO		# Loads value of multiplier
+	LDI $2 NUMONE		# Loads value of multiplicand
+	ADD $3 $3 1			# Creates bitmask in $3 by adding 1 to empty $3.
 
 OUTER:
-	AND $R4 $R3 $R1		# Value of ANDed R3 and R1 stored in R4.
-	BR z INNER			# Checks value of whether R4 is zero
-	ADD $R5 $R5 $R2		# Offset value of R5 by digits via sum of R2
+	AND $4 $3 $1		# Value of ANDed $3 and $1 stored in $4.
+	BR z INNER			# Checks value of whether $4 is zero
+	ADD $5 $5 $2		# Offset value of $5 by digits via sum of $2
 
 INNER:
-	LSD	$R3 $R3 1		# Left shifts R3 over by 1 bit
-	LSD $R2 $R2 1		# Left shifts R2 over by 1 bit
-	BR np OUTER			# Checks value of whether R2 is positive/negative
-	ST $R5 NUMTHREE		# Answer stored back into memory when finished
+	LSD	$3 $3 1			# Left shifts $3 over by 1 bit
+	LSD $2 $2 1			# Left shifts $2 over by 1 bit
+	BR np OUTER			# Checks value of whether $2 is positive/negative
+	ST $5 NUMTHREE		# Answer stored back into memory when finished
 
 	HALT				# Halts program
 
