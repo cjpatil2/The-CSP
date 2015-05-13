@@ -22,43 +22,26 @@
 #
 #=================================================================
 
-from sys import argv
+# Aparently some trouble with the sys stuff, will fix later
+#from sys import argv
 
 # Open the assembly file passed as a command-line argument
-filename = sys.argv[1]
+filename = "test.asm"						#sys.argv[1]
 asm_file = open(filename)
 
 # Create the memory file in the Quartus directory
-memory_name = sys.argv[2]
+memory_name = "out.lst"						#sys.argv[2]
 memory_file = open(memory_name, 'w')
 
 # This is the starting program address variable. Gets updated when the
 # program's BEGIN statement is read. All offsets are derived by line
 # offsets from this and previous held data variables.
-base_address = NONE
+base_address = None
 
 # The final string output of hex values
-string output_values = ""
+output_values = ""
 
 
-for line in asm_file
-
-	# Remove whitespace from beginning and split into list by spaces
-	parsed_spaces = line.strip().split()
-
-	# If a line is just a comment, ignore, string basically doesn't change
-	if parsed_spaces[0] == "#"
-		output_values = output_values + ""
-
-	# If the first word is BEGIN, signify a program beginning
-	if parsed_spaces[0] == "BEGIN"
-		base_address = int(parsed_spaces[1])
-
-	# Decode each line
-	converted_line = decoded_line(parsed_spaces)
-
-	# Write into file
-	memory_file.write(converted_line)
 	
 
 
@@ -119,7 +102,7 @@ def decoded_line(line_in_file):
 		line_in_file[0] == "NOP"):
 		full_instruction = special_operation(line_in_file)
 
-	else
+	else:
 		full_instruction = ""
 
 	return full_instruction
@@ -134,16 +117,16 @@ def arithmetic_operation(line_in_file):
 	# Depending on the last number, the instruction is I- or R-type
 	# In the case of NOT, we just ignore and set all remaining bits 0
 
-	if line_in_file[0] == "NOT"
+	if line_in_file[0] == "NOT":
 		sr2_set = "00000000000000000"
 
-	else if line_in_file[0] == "LSD" or line_in_file[0] == "RSD"
+	elif line_in_file[0] == "LSD" or line_in_file[0] == "RSD":
 		sr2_set = imm_convert(line_in_file[3], '017b') + "0"
 
-	else if '$' in line_in_file[3]
+	elif '$' in line_in_file[3]:
 		sr2_set = register_convert(line_in_file[3]) + "00000000000000"
 
-	else if '$' not in line_in_file[3]
+	elif '$' not in line_in_file[3]:
 		sr2_set = imm_convert(line_in_file[3], '017b') + "1"
 
 	final_instruction = opcode + dr_set + sr1_set + sr2_set
@@ -154,31 +137,31 @@ def arithmetic_operation(line_in_file):
 # Opcode decode function for arithmetic instructions
 def arith_opcode_decode(line_in_file):
 
-	if(line_in_file[0] == "ADD")
+	if(line_in_file[0] == "ADD"):
 		op_out = "000000"
-	else if line_in_file[0] == "SUB":
+	elif line_in_file[0] == "SUB":
 		op_out = "000001"
-	else if line_in_file[0] == "MULT":
+	elif line_in_file[0] == "MULT":
 		op_out = "000010"
-	else if line_in_file[0] == "DIV":
+	elif line_in_file[0] == "DIV":
 		op_out = "000011"
 
-	else if line_in_file[0] == "AND":
+	elif line_in_file[0] == "AND":
 		op_out = "000100"
-	else if line_in_file[0] == "OR":
+	elif line_in_file[0] == "OR":
 		op_out = "000101"
-	else if line_in_file[0] == "NOT":
+	elif line_in_file[0] == "NOT":
 		op_out = "000110"
-	else if line_in_file[0] == "XOR":
+	elif line_in_file[0] == "XOR":
 		op_out = "000111"
 
-	else if line_in_file[0] == "LSA":
+	elif line_in_file[0] == "LSA":
 		op_out = "001000"
-	else if line_in_file[0] == "LSD":
+	elif line_in_file[0] == "LSD":
 		op_out = "001000"
-	else if line_in_file[0] == "RSA":
+	elif line_in_file[0] == "RSA":
 		op_out = "001001"
-	else if line_in_file[0] == "RSD":
+	elif line_in_file[0] == "RSD":
 		op_out = "001001"
 
 	return op_out
@@ -206,4 +189,46 @@ def hex_convert(bin_value):
 	hex_value = hex(int(bin_value,2)).split('x')[1]
 
 	return hex_value
+	
+	
+	
+	
+	
+	
+	
+	
+	
+for line in asm_file:
+
+	# Remove whitespace from beginning and split into list by spaces
+	parsed_spaces = line.strip().split()
+
+	# If a line is just a comment, ignore, string basically doesn't change
+	# parsed_spaces[1] == "#" causes a list index error. Maybe look into on IDE in Windows
+	#if parsed_spaces[1] == "#":
+	#	output_values = output_values + ""
+
+	# If the first word is BEGIN, signify a program beginning
+	if parsed_spaces[0] == "BEGIN":
+		base_address = int(parsed_spaces[1])
+
+	# Decode each line
+	converted_line = decoded_line(parsed_spaces)
+
+	# Write into file
+	memory_file.write(converted_line)
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
