@@ -47,59 +47,59 @@ output_values = ""
 
 def decoded_line(line_in_file):
 
-	if (line_in_file[0] == "ADD" or 
-		line_in_file[0] == "SUB" or 
-		line_in_file[0] == "MULT" or
-		line_in_file[0] == "DIV" or 
-		line_in_file[0] == "AND" or
-		line_in_file[0] == "OR" or 
-		line_in_file[0] == "NOT" or
-		line_in_file[0] == "XOR" or 
-		line_in_file[0] == "LSA" or
-		line_in_file[0] == "LSD" or 
-		line_in_file[0] == "RSA" or
-		line_in_file[0] == "RSD"):
+	if (line_in_file[0] == 'ADD' or 
+		line_in_file[0] == 'SUB' or 
+		line_in_file[0] == 'MUL' or
+		line_in_file[0] == 'DIV' or 
+		line_in_file[0] == 'AND' or
+		line_in_file[0] == 'OR"'or 
+		line_in_file[0] == 'NOT' or
+		line_in_file[0] == 'XOR' or 
+		line_in_file[0] == 'LSA' or
+		line_in_file[0] == 'LSD' or 
+		line_in_file[0] == 'RSA' or
+		line_in_file[0] == 'RSD'):
 		full_instruction = arithmetic_operation(line_in_file)
 
-	if (line_in_file[0] == "FADD" or 
-		line_in_file[0] == "FSUB" or 
-		line_in_file[0] == "FMULT" or
-		line_in_file[0] == "FDIV" or 
-		line_in_file[0] == "ITOF" or
-		line_in_file[0] == "FTOI"):
+	if (line_in_file[0] == 'FADD' or 
+		line_in_file[0] == 'FSUB' or 
+		line_in_file[0] == 'FMUL' or
+		line_in_file[0] == 'FDIV' or 
+		line_in_file[0] == 'ITOF' or
+		line_in_file[0] == 'FTOI'):
 		full_instruction = floating_operation(line_in_file)
 
-	if (line_in_file[0] == "BR" or 
-		line_in_file[0] == "BRC" or 
-		line_in_file[0] == "BREQ" or
-		line_in_file[0] == "BRNEQ" or 
-		line_in_file[0] == "JMP" or
-		line_in_file[0] == "RET" or 
-		line_in_file[0] == "PCR" or
-		line_in_file[0] == "PCS"):
+	if (line_in_file[0] == 'BR' or 
+		line_in_file[0] == 'BRC' or 
+		line_in_file[0] == 'BRE' or
+		line_in_file[0] == 'BRNEQ' or 
+		line_in_file[0] == 'JMP' or
+		line_in_file[0] == 'RET' or 
+		line_in_file[0] == 'PCR' or
+		line_in_file[0] == 'PCS'):
 		full_instruction = branch_operation(line_in_file)
 
-	if (line_in_file[0] == "LD" or 
-		line_in_file[0] == "LDR" or 
-		line_in_file[0] == "LDW" or
-		line_in_file[0] == "LDB" or 
-		line_in_file[0] == "LSP" or
-		line_in_file[0] == "POP" or 
-		line_in_file[0] == "SDEC"):
+	if (line_in_file[0] == 'LD'or 
+		line_in_file[0] == 'LDR' or 
+		line_in_file[0] == 'LDW' or
+		line_in_file[0] == 'LDB' or 
+		line_in_file[0] == 'LSP' or
+		line_in_file[0] == 'POP' or 
+		line_in_file[0] == 'SDEC'):
 		full_instruction = load_operation(line_in_file)
 
-	if (line_in_file[0] == "ST" or 
-		line_in_file[0] == "STR" or 
-		line_in_file[0] == "STW" or
-		line_in_file[0] == "STB" or 
-		line_in_file[0] == "STP" or
-		line_in_file[0] == "PUSH" or 
-		line_in_file[0] == "SINC"):
+	if (line_in_file[0] == 'ST'or 
+		line_in_file[0] == 'STR' or 
+		line_in_file[0] == 'STW' or
+		line_in_file[0] == 'STB' or 
+		line_in_file[0] == 'STP' or
+		line_in_file[0] == 'PUSH' or 
+		line_in_file[0] == 'SINC'):
 		full_instruction = store_operation(line_in_file)
 
-	if (line_in_file[0] == "WVAL" or 
-		line_in_file[0] == "HALT" or 
-		line_in_file[0] == "NOP"):
+	if (line_in_file[0] == 'WVAL' or 
+		line_in_file[0] == 'HALT' or 
+		line_in_file[0] == 'NOP'):
 		full_instruction = special_operation(line_in_file)
 
 	else:
@@ -209,7 +209,7 @@ for line in asm_file:
 	#	output_values = output_values + ""
 
 	# If the first word is BEGIN, signify a program beginning
-	if parsed_spaces[0] == "BEGIN":
+	if parsed_spaces[0] == 'BEGIN':
 		base_address = int(parsed_spaces[1])
 
 	# Decode each line
